@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: iRedlof SmartHome Lambda
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 10
+
+Resources:
+  AlexaIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AWSIoTFullAccess
+  SwitchBoardDevicesDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: iRedlofSwitchBoard
+      AttributeDefinitions:
+        - AttributeName: user_id
+          AttributeType: S
+        - AttributeName: board_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: user_id
+          KeyType: HASH
+        - AttributeName: board_id
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+  DevicesDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: iRedlofDevices
+      AttributeDefinitions:
+        - AttributeName: user_id
+          AttributeType: S
+        - AttributeName: device_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: user_id
+          KeyType: HASH
+        - AttributeName: device_id
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+  AlexaSkillFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Handler: smarthome.lambdaHandler
+      CodeUri: alexa-smarthome/
+      MemorySize: 128
+      Description: A Lambda function to handle Alexa SmartHome tasks
+      Role: !GetAtt AlexaIAMRole.Arn
+      Environment:
+        Variables:
+          emailAddress: typhoon.2010@gmail.com
+          phoneNumber: 12067718724
+          deviceDynamoDBTableName: !Select [1, !Split ['/', !GetAtt DevicesDynamoDBTable.Arn]]
+          switchBoardDynamoDBTableName: !Select [1, !Split ['/', !GetAtt DevicesDynamoDBTable.Arn]]
+          prodIOTDeviceEndpoint: a3d9g5ut0qd4az.iot.us-east-1.amazonaws.com
+          devIOTDeviceEndpoint: a3d9g5ut0qd4az-ats.iot.us-west-2.amazonaws.com
+  # LoadDataFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: load-data.add
+  #     CodeUri: alexa-smarthome/
+  #     MemorySize: 128
+  #     Description: A Lambda function to load data to DynamoDB tables
+  #     Role: !GetAtt AlexaIAMRole.Arn
+  #     Environment:
+  #       Variables:
+  #         environment: 'local'
+  #         deviceDynamoDBTableName: 'iRedlofDevices'
+  #         switchBoardDynamoDBTableName: 'iRedlofSwitchBoard'
+  # QueryDataFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: load-data.query
+  #     CodeUri: alexa-smarthome/
+  #     MemorySize: 128
+  #     Description: A Lambda function to load data to DynamoDB tables
+  #     Role: !GetAtt AlexaIAMRole.Arn
+  #     Environment:
+  #       Variables:
+  #         environment: 'local'
+  #         deviceDynamoDBTableName: 'iRedlofDevices'
+  #         switchBoardDynamoDBTableName: 'iRedlofSwitchBoard'
+  LambdaVersion:
+    Type: AWS::Lambda::Version
+    Properties:
+      FunctionName: !GetAtt AlexaSkillFunction.Arn
+  AsyncConfig:
+    Type: AWS::Lambda::EventInvokeConfig
+    Properties:
+      FunctionName: !Ref AlexaSkillFunction
+      MaximumEventAgeInSeconds: 60 # Minimum of 60 is required
+      MaximumRetryAttempts: 1
+      Qualifier: !GetAtt LambdaVersion.Version

@@ -1,0 +1,24 @@
+{
+    "directive": {
+        "header": {
+            "namespace": "Alexa",
+            "name": "ReportState",
+            "payloadVersion": "3",
+            "messageId": "46e6bb17-886b-463c-a091-2c3cfff62d6b",
+            "correlationToken": "AAAAAAAAAABbQlWParixc058YTHpOgaN/AEAAAAAAAA1DWDR2ycd/61mbXCRPLC2nq98LxKDPmqnt3XAdzVorGZrm4I7xMe9/1HOGXGFV7W84b7lmMxcCZkHdNvw4nwGSI+GwBGPX37sLeY2YF3SqcqVsOicnw19dE2DKHkrbyXyMNuJDhVGDzCqPmUslMbjBNUQ9pQRUxiWq3iitsTHpZeMAfqI6PYi8ux5bSVJtb4it5YMZJ2xU0MLtjv/G3SjHGNu6tdUN622WAvcNeTWjTAIWN6KBYXFb4xYHE/9K6L1wsd80X8vnnJMgBnRjNXYayCS7dlKuMDMIS7AuqCTOIlEuDJSBsHamRDwaBZEXNfr7RGoIAdYn84FkYeG6aGQl127VVg5H8ZDdcRDGSoj4J/DFk6VvOkoSVxrg31l5rfhjZdD/QBTuZMw0PKGeqInWUqjTyujLbCiMtMAmXwPxQSGkY/g4XY9kufj8sNQTFLmE12sJrj9iCpD1QMpIFnAmlgFLf4tKIABFRYo0d4Epum5TModmWe5cf+PIo5m1SoJQDogJzrAYVtujGcI0ICfNBqhulI0ZAZcN5g6tFqU9yu/DJ7u6j1V3a+vvluUEMUYTrIVUFZgDRvH/u0ahl85bwCSL1goO3aC8GmxZhTziUnSBwMRGdBkwO0rqtNEnMPbHTbab48lK4c3si5tdTny41b6c3QY3M7lKtm7"
+        },
+        "endpoint": {
+            "scope": {
+                "type": "BearerToken",
+                "token": "Atza|IwEBIOXo6uegRzrqBCIlrw4VDLDa91PHjyhcSagGDoCf5Bgctzbzli2ECGAcQRLdFyI2jQBgRSXqD4JgyWACBH_i14Bwjs_CuypW9lS3O3qrhC9GrWmAnjsyxJ2KrdBpJe7IoVdFwQIMUQvc-7zXyCMkJeNP5LUMINtI8lFIREJwvwj3FfdisxNYJSC4pxeUNwOk7K8BlMGEFxgyLzOmdqKmAcNGVXUXJnNFr-L8DqittaN7LhWWNiPtG65k0F_8kdigiZOlXrgYNrA7bmhAISS9e6A3WtbOV54Csj7d_ZaS5Q4wiMIHIMMCKMCoYsH9tdiBZM9Ly91K49EWtqXUw3xpGpNVcIFyHtUS0s6fxaKLKZyLgpTAfBJXgRlLBqTIH9ukT2yBAHpVJutmSfOqTkSremCRqmvTJGByXT_BKZFT753HkA"
+            },
+            "endpointId": "0080000987_tv",
+            "cookie": {
+                "out_MQTTChannel": "/0080000987/feedback",
+                "in_MQTTChannel": "/0080000987/command",
+                "gpio": "12"
+            }
+        },
+        "payload": {}
+    }
+}

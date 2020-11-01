@@ -1,0 +1,24 @@
+{
+    "directive": {
+        "header": {
+            "namespace": "Alexa.PowerController",
+            "name": "TurnOff",
+            "payloadVersion": "3",
+            "messageId": "e390a507-72c3-4eae-a6f3-d40f4f73e64d",
+            "correlationToken": "AAAAAAAAAAApZFPWnkJbUWemIEhOwjql/AEAAAAAAABCWa1v6y+9Tq7mCWJRceRq1EJLqoQ+i5ilwAamqCPBU9Goi9agO8/n3DxBQFllUQDb2QgWY1O12TIM79LMWb0VPAHeRFNLyW7gE4DrXg3yPOYo+ZHu+yOqCTlfEwDNu/kep7wbyu/haQ7NLWmMLr4a2+AueUQEgqp/Hughtj6nC7dTDnvQOLs8k/750g2cZsoBHjPdMUB85SK/Kc0AVo314hX2RxM+5KAxGws1H1g7wyHd6wFVj0H58IkutBKZuEOxaKvB1ozXUkMVWADdChxsT5vj8/xFVlfsreKozp1xMgg8f44hrwo1aNOdqOlfTVRbL8iTQUEHE+e5Rge9Ue7edk0wrdXeKsx/mHcYa7zUuC1ISo9kwScysBgpJodzsizlt53P6tDRQcDWpIW7qwVD5v+H5GyZJwWwMk2VycEZP6XZqxrrhdcl6VM4n7J4l12wRx5Fktj1H0NoxAHkuQXYD1xyUs/LnT+LXuijRCaOgFKhVoCnj2uTzC6/pCKm88k4g7p3KpartMtRKMg8Bslpfn26hB4ZvJggxc4uFxJiAo/+7P9dR5zNoOGT3eg+xc8g0ysnd5sDOBM1wO9okFz6BNWTPOXDXzJ1MwgCISCDn+3ncV61F11U+jBVZtYQqiy829BElaFUhPlNn+NJYPGHO4GZUzxyufRYCbTF"
+        },
+        "endpoint": {
+            "scope": {
+                "type": "BearerToken",
+                "token": "Atza|IwEBIMOBKACXUJLNTIfJLrFL3c_domyPPx7SINcPuI5H5UnuTcxGdGjnY7mpihX86-x_csMuLzte3DeoyU--Ihlr3FUPGM_OURhbdXodSjNEGW6l5ow4juf1UemT8YKg8xOtBGe94R8BeHzjuGdKgDpjUDwpXNMP3KNjJsP8NKlBJxKVDbJNVwswFG56nxwuJn8w-MQ2PO1CcQviQ3Il7pJxqfQ5vt6gOpuJh_PaV8wosKmb86CyL85V47EK5FQ1FqJntwkHHuL8t4Yt126mJhG7R5H8QUEN9JRXGWLO1uFiVv7izMXzM-T-7E7grQtlPefy-bzXnJEhActZjhGPAVCOCK0evfEN6s32L60uohq9JP7VQ7nnvD6kERuAH5J9RW_R3L70-O7Loc1yxX3Dop7RGaC1DEXwk68z7rdRULu1t8FXNQ"
+            },
+            "endpointId": "0080000987_tv",
+            "cookie": {
+                "out_MQTTChannel": "/0080000987/feedback",
+                "in_MQTTChannel": "/0080000987/command",
+                "gpio": "12"
+            }
+        },
+        "payload": {}
+    }
+}
