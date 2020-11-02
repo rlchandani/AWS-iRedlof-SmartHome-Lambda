@@ -5,7 +5,6 @@ const serviceAccount = require('../keys/smartHomeAuthKey.json');
 const SCOPES = ['smartdevices-272506.apps.googleusercontent.com'];
 const GOOGLE_SMARTHOME_API = 'https://us-central1-smartdevices-272506.cloudfunctions.net';
 // const GOOGLE_SMARTHOME_API = 'http://host.docker.internal:5001/smartdevices-272506/us-central1';
-const DEBUG_ACCESS_TOKEN = 'ya29.a0AfH6SMADkswCNlRbrQ3kL-i_e9u48sKegaS3LGHIzl7p2V2To6ZoDgWJRV5jo_GNpoQBuNFfGAhHg-i9tGBZia-kvGGf9ansZyxHtdEo7gz_2magVRHv9pg1S11_4pypYs_rh6lpqEadyVw004VX6cHuJu3aEFcP8Ro_Uw';
 const API_KEY = 'sDxhe7CIfwfTLfyTRA83cc3PKC62';
 
 exports.discoverDevices = async (requestId) => {
@@ -22,8 +21,7 @@ exports.discoverDevices = async (requestId) => {
             },
             params: {
                 apiKey: API_KEY,
-                requestId: requestId,
-                accessToken: DEBUG_ACCESS_TOKEN
+                requestId: requestId
             }
         })
         .catch(error => {
@@ -51,7 +49,6 @@ exports.reportState = async (deviceId, requestId) => {
             params: {
                 apiKey: API_KEY,
                 requestId: requestId,
-                accessToken: DEBUG_ACCESS_TOKEN,
                 deviceId: deviceId
             }
         })
@@ -80,7 +77,6 @@ exports.controlDevice = async (deviceId, powerState, requestId) => {
             params: {
                 apiKey: API_KEY,
                 requestId: requestId,
-                accessToken: DEBUG_ACCESS_TOKEN,
                 deviceId: deviceId,
                 powerState: powerState
             }
