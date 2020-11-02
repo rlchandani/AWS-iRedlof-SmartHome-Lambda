@@ -1,6 +1,7 @@
 /** Required Libraries */
 const axios = require('axios');
 const AWS = require("aws-sdk");
+const googleSmartHomeHelper = require('./helper/google-smarthome-helper');
 
 /** Lambda Environment Variables */
 const PHONE_NUMBER = process.env.phoneNumber; // change it to your phone number
@@ -40,7 +41,14 @@ exports.lambdaHandler = async (event, context, callback) => {
             await systemStatus(event, context, callback);
             break;
         case 'Alexa':
-            await alexa(event, context, callback);
+            switch (eventHeader.name) {
+                case 'ReportState':
+                    await reportState(event, context, callback);
+                    break;
+                default:
+                    logMessage(true, 'Unsupported Name', `No supported name: ${eventHeader.name}`);
+                    context.fail('Something went wrong');
+            }
             break;
         default:
             logMessage(true, 'Unsupported Namespace', `No supported namespace: ${eventHeader.namespace}`);
@@ -73,14 +81,21 @@ const discoverDevices = async (event, context, callback) => {
 
         const dbResponse = await queryDevice(profile.user_id)
             .catch((err) => {
-                console.error(`Failed while querying DynamoDB table for deviceId: ${deviceId}: ${err}`);
+                console.error(`Failed while querying DynamoDB table: ${err}`);
                 context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'INTERNAL_ERROR', `Failed while querying DynamoDB table for deviceId: ${deviceId}`));
                 return;
             });
-
         dbResponse.Items.forEach((item) => {
             devices.push(item.data);
         });
+
+        const googleDevices = await googleSmartHomeHelper.discoverDevices(eventHeader.messageId);
+        console.log("Rohit");
+        console.log(JSON.stringify(googleDevices));
+        googleDevices.forEach(device => {
+            devices.push(device);
+        });
+
         var params = {
             topic: iotMQTTChannelCommand,
             payload: `{action:"discoveredAppliances", applianceCount:${devices.length}, user:${profile}}`,
@@ -106,7 +121,7 @@ const discoverDevices = async (event, context, callback) => {
     }
 }
 
-const alexa = async (event, context, callback) => {
+const reportState = async (event, context, callback) => {
     const eventHeader = event.directive.header;
     const eventEndpoint = event.directive.endpoint;
     const authenticationType = eventEndpoint.scope.type;
@@ -137,10 +152,7 @@ const alexa = async (event, context, callback) => {
         const dbResponse = await queryDevice(profile.user_id, deviceId)
             .catch((err) => {
                 console.error(`Failed while querying DynamoDB table for deviceId: ${deviceId} and userId: ${profile.user_id}: ${err}`);
-                context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'INTERNAL_ERROR', `Failed while querying DynamoDB table for deviceId: ${deviceId} and userId: ${profile.user_id}`));
-                return;
             });
-
         dbResponse.Items.forEach((item) => {
             var property = {
                 namespace: "Alexa.PowerController",
@@ -151,6 +163,17 @@ const alexa = async (event, context, callback) => {
             }
             contextResult.properties.push(property);
         });
+
+        if (contextResult.properties.length === 0) {
+            const googleResponse = await googleSmartHomeHelper.reportState(deviceId, eventHeader.messageId);
+            if (googleResponse.length === 0) {
+                context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'INTERNAL_ERROR', `Failed while querying DynamoDB table for deviceId: ${deviceId} and userId: ${profile.user_id}`));
+                return;
+            }
+            googleResponse.forEach(device => {
+                contextResult.properties.push(device.property);
+            })
+        }
 
         var alexaResponse = {
             context: contextResult,
@@ -240,12 +263,6 @@ const controlDevices = async (event, context, callback) => {
                 context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'INTERNAL_ERROR', `Failed while querying DynamoDB table for deviceId: ${deviceId} and userId: ${profile.user_id}`));
                 return;
             });
-
-        if (dbResponse.Items.length == 0) {
-            console.error(`Could not find device with deviceId: ${deviceId} for userId: ${profile.user_id}`);
-            context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'NO_SUCH_ENDPOINT', `Could not find device with deviceId: ${deviceId} for userId: ${profile.user_id}`));
-            return;
-        }
         dbResponse.Items.forEach((item) => {
             deviceName = item.data.friendlyName;
             deviceGPIO = item.gpio;
@@ -257,43 +274,57 @@ const controlDevices = async (event, context, callback) => {
                     return;
                 });
         });
-        var params = {
-            topic: deviceMQTTIn,
-            payload: '{gpio: {pin:' + deviceGPIO + ', state:' + powerState + '}}',
-            qos: 0
-        };
-        await iotData.publish(params).promise()
-            .catch((err) => {
-                /* 
-                snsParam = {
-                    PhoneNumber: PHONE_NUMBER,
-                    Message: 'Alexa Control: Failed to publish MQTT to topic ' + appliance_mqtt_in + ". Here is the full event " + JSON.stringify(params),
-                };
-                SNS.publish(snsParam, function (error, data) {
-                    if (error) {
-                        console.error("Failed to send SNS message", error.stack);
-                        return;
-                    }
-                    console.log("SNS message sent.");
-                });
-                */
-                console.error(`Failed to publish MQTT to IOT device: ${err}`);
-                context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'ENDPOINT_UNREACHABLE', 'Failed to publish MQTT to IOT device'));
-                return;
-            });
-        /*
-        snsParam = {
-            PhoneNumber: PHONE_NUMBER,
-            Message: 'Alexa Control: ' + appliance_name + " " + (appliance_state ? "turned on" : "turned off") + ".",
-        };
-        SNS.publish(snsParam, function (error, data) {
-            if (error) {
-                console.error("Failed to send SNS message", error.stack);
+
+        if (dbResponse.Items.length == 0) {
+            const googleResponse = await googleSmartHomeHelper.controlDevice(deviceId, powerStateValue, eventHeader.messageId);
+            if (googleResponse.length === 0) {
+                console.error(`Could not find device with deviceId: ${deviceId} for userId: ${profile.user_id}`);
+                context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'NO_SUCH_ENDPOINT', `Could not find device with deviceId: ${deviceId} for userId: ${profile.user_id}`));
                 return;
             }
-            console.log("SNS message sent.");
-        });
-        */
+            googleResponse.forEach(device => {
+                device.property.value = powerStateValue;
+                contextResult.properties[0].value = device.property.value;
+            })
+        } else {
+            var params = {
+                topic: deviceMQTTIn,
+                payload: '{gpio: {pin:' + deviceGPIO + ', state:' + powerState + '}}',
+                qos: 0
+            };
+            await iotData.publish(params).promise()
+                .catch((err) => {
+                    /* 
+                    snsParam = {
+                        PhoneNumber: PHONE_NUMBER,
+                        Message: 'Alexa Control: Failed to publish MQTT to topic ' + appliance_mqtt_in + ". Here is the full event " + JSON.stringify(params),
+                    };
+                    SNS.publish(snsParam, function (error, data) {
+                        if (error) {
+                            console.error("Failed to send SNS message", error.stack);
+                            return;
+                        }
+                        console.log("SNS message sent.");
+                    });
+                    */
+                    console.error(`Failed to publish MQTT to IOT device: ${err}`);
+                    context.fail(generateSyncError(eventHeader.messageId, eventHeader.correlationToken, authenticationToken, deviceId, 'ENDPOINT_UNREACHABLE', 'Failed to publish MQTT to IOT device'));
+                    return;
+                });
+            /*
+            snsParam = {
+                PhoneNumber: PHONE_NUMBER,
+                Message: 'Alexa Control: ' + appliance_name + " " + (appliance_state ? "turned on" : "turned off") + ".",
+            };
+            SNS.publish(snsParam, function (error, data) {
+                if (error) {
+                    console.error("Failed to send SNS message", error.stack);
+                    return;
+                }
+                console.log("SNS message sent.");
+            });
+            */
+        }
 
         var controlDeviceResponse = {
             context: contextResult,

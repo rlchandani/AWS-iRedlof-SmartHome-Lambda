@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "smartdevices-272506",
+  "private_key_id": "6bd69e0e493152948e0b046b067df01b2f7401f1",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC5iPKRSbrS0Rk9\nUYe3YsEv9P4pWq+AqXh/N8FUSq25gYLtPRp7gBNxbyvobHCBEeBUrBoQoDfj1sFt\ngeFOPNedbskWjrNxwOxpmxiKqndM908wnMmVUm+jbrWwesYHEEDeXxIrGX2n8bO5\nRBGhDerxeeZV68YcbxU/TBRBsHzrUg1zSw0pdFLYm0ZlQ53M2MuUAfuVcZlt+8JC\neBUqVFuX3MyL1qPXZsIElXH6fEO0j4GJ7e5ogmI2iOdVfFKF+ySZuT1eBXscj7uA\nVqNYBuYEvYYcDM9/Ar7G8ioA+Dpa3UQTIe1/bRp3TGsoEPuvhUWeP1/Z6GLrOiFc\nOhdze28DAgMBAAECggEAILTclfIaZgmIWn/h3dkh1zNoDqA26gZ2AG8yvIpBn78N\n9oZcAcNtKgUAB4P+PTKKikKggafM0nRMOuK3dhRRqiYaesiDJ51rz54QsHkmeMHs\nCtTI0HLszTG6A7dQ63PZC5pU2JYwyYdZOGKgfPS4IwNrMGBU1zRZ2YOu2nmjO9Q4\n3pyw9a76bbv0piKGYHl9rdowUcCf66LsYvyQ1tcTQNUv3yxRFmz46pgjVz3tBEj0\nxWljCigBFVOhDVqA4xblV/skEMfd5bFeMV1RvXrvFiiPvCae7bnqb0mDo8tQPkv/\nKYu8qfJ/3BC7AvWMhPMBP8Q54ZJZjpRm7fvze9O1GQKBgQDxenxQMVfP88/iK1nC\n/Dy4stMvBVwnUdLQ8SEBbcHLgHgaxPtlLh9V493rkMrVjVMYnIEr1puXVuVywb42\n3ecg/6xQ5iyvjNcDEhCd/tW2xwDxJ5UV3Gm5fzIe9STYrHWb62pRlXfMzHCvQxz/\nqzT+tLRuvv80zfJEUkXvYkflpwKBgQDEsTjur2NC/ojRcdacD7LTzuefEn0+m3cj\n7iidM1K4sDC3cQJfECN5Kq/nZK3mvIrOaAaTeHZaiydQTbsW0BRb6Dc+8dq66GUe\nNjkC6lbR1wnlZceVYDEA/8eZ1JAVqcpi1J/IoyKfT1Ri+mmXq8ccJqVij/hsKRHw\nnmArh2RPRQKBgFVjIG4i5JAuAIZTGexu0PHmmfJ4jLuCnW8wtKEStIJHLTEaEmMW\nyhHO/3v6uR6GWKnNPYfI3T/IhF3t0FsKYF40yjPZEFgLD0SQsLuNjviQqe6cNoWC\naQgkyA5WVO8hHH1D41Zx6ejLKdVvf+OQIK8oKt02QHvljxNFnGEneZDlAoGAe3fQ\nCCx6f8xtsCPolrBYDhNcXANsMUe/4wMV5ZAZBiw7eHttBKWJzv6XywXtD+EctPKh\n5iKBENc3B3az0V8u2H6NZ2rEZf2JtAxPf2AAvdphsOlR/peSS1FER3EiPScHD0Dv\nSC/3hM90ZmlQrU+8PhSYTqWXSLYDN+sC7XAg7I0CgYEA0xU5X4zuyOSlM1hPL1VB\nt8zF5h9gXOyridWHl7ECRT9Wi692mwhq61dTBNYU47gRt5IHy6KxxZkbhpTugEmB\nc4U/vPqlpFBWdmn8OpcdhRUYRNQqLOcrnIlzDBAQKW4wKhB+YIgC1fOWQHK9jXLX\nVgf7FTOFExMRUmy0xF6krrE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "smartdevicesapp@smartdevices-272506.iam.gserviceaccount.com",
+  "client_id": "110689305102341220488",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/smartdevicesapp%40smartdevices-272506.iam.gserviceaccount.com"
+}
