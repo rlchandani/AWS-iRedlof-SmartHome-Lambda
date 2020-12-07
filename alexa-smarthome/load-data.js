@@ -2,7 +2,7 @@ const AWS = require("aws-sdk");
 
 const ENVIRONMENT = process.env.environment;
 const SWITCH_BOARD_DYNAMODB_TABLE = process.env.switchBoardDynamoDBTableName;
-const DEVICE_DYNAMODB_TABLE = process.env.deviceDynamoDBTableName;
+const DEVICE_DYNAMODB_TABLE = process.env.devicesDynamoDBTableName;
 const USER_ID = "amzn1.account.AGHZGP6K7X74P4QVRIJEW7BUVB5Q"
 
 exports.add = async (event, context, callback) => {

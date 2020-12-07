@@ -8,11 +8,7 @@ const GOOGLE_SMARTHOME_API = 'https://us-central1-smartdevices-272506.cloudfunct
 const API_KEY = 'sDxhe7CIfwfTLfyTRA83cc3PKC62';
 
 exports.discoverDevices = async (requestId) => {
-    const lambdaName = 'Discover Devices!';
-    console.info(`${lambdaName}`); // All log statements are written to CloudWatch
-
     const token = await authenticate();
-
     const response = await axios.get(
         `${GOOGLE_SMARTHOME_API}/api/sync`,
         {
@@ -28,18 +24,11 @@ exports.discoverDevices = async (requestId) => {
             console.error(error);
             return [];
         });
-
-    const devices = convertToAWSDeviceDiscovery(response.data);
-    console.log(JSON.stringify(devices));
-    return devices;
+    return convertToAWSDeviceDiscovery(response.data);
 }
 
 exports.reportState = async (deviceId, requestId) => {
-    const lambdaName = 'Report Status!';
-    console.info(`${lambdaName}`); // All log statements are written to CloudWatch
-
     const token = await authenticate();
-
     const response = await axios.get(
         `${GOOGLE_SMARTHOME_API}/api/query`,
         {
@@ -56,18 +45,11 @@ exports.reportState = async (deviceId, requestId) => {
             console.error(error);
             return [];
         });
-
-    const devices = convertToAWSReportState(response.data).filter(device => device.endpointId === deviceId);
-    console.log(JSON.stringify(devices));
-    return devices;
+    return convertToAWSReportState(response.data).filter(device => device.endpointId === deviceId);
 }
 
 exports.controlDevice = async (deviceId, powerState, requestId) => {
-    const lambdaName = 'Control Devices!';
-    console.info(`${lambdaName}`); // All log statements are written to CloudWatch
-
     const token = await authenticate();
-
     const response = await axios.get(
         `${GOOGLE_SMARTHOME_API}/api/execute`,
         {
@@ -85,10 +67,7 @@ exports.controlDevice = async (deviceId, powerState, requestId) => {
             console.error(error);
             return [];
         });
-
-    const devices = convertToAWSControlDevice(response.data).filter(device => device.endpointId === deviceId);
-    console.log(JSON.stringify(devices));
-    return devices;
+    return convertToAWSControlDevice(response.data).filter(device => device.endpointId === deviceId);
 }
 
 const convertToAWSControlDevice = (response) => {

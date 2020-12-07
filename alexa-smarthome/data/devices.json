@@ -1,0 +1,142 @@
+[
+    {
+        "device_id": "aws-smartplug-01",
+        "switchboard_id": "0080000987",
+        "config": {
+            "capabilities": [
+                {
+                    "interface": "Alexa.PowerController",
+                    "properties": {
+                        "proactivelyReported": true,
+                        "retrievable": true,
+                        "supported": [
+                            {
+                                "name": "powerState"
+                            }
+                        ]
+                    },
+                    "type": "AlexaInterface",
+                    "version": "3"
+                }
+            ],
+            "cookie": {
+                "gpio": 14,
+                "in_MQTTChannel": "/0080000987/command",
+                "out_MQTTChannel": "/0080000987/feedback"
+            },
+            "description": "AWS Outlet Alpha, connected via iRedlof SmartHome Skill",
+            "displayCategories": [
+                "SMARTPLUG"
+            ],
+            "endpointId": "aws-smartplug-01",
+            "friendlyName": "AWS Outlet Alpha",
+            "manufacturerName": "iRedlof Co.",
+            "version": "v0.1"
+        }
+    },
+    {
+        "device_id": "aws-smartplug-02",
+        "switchboard_id": "0080000987",
+        "config": {
+            "capabilities": [
+                {
+                    "interface": "Alexa.PowerController",
+                    "properties": {
+                        "proactivelyReported": true,
+                        "retrievable": true,
+                        "supported": [
+                            {
+                                "name": "powerState"
+                            }
+                        ]
+                    },
+                    "type": "AlexaInterface",
+                    "version": "3"
+                }
+            ],
+            "cookie": {
+                "gpio": 13,
+                "in_MQTTChannel": "/0080000987/command",
+                "out_MQTTChannel": "/0080000987/feedback"
+            },
+            "description": "AWS Outlet Beta, connected via iRedlof SmartHome Skill",
+            "displayCategories": [
+                "SMARTPLUG"
+            ],
+            "endpointId": "aws-smartplug-02",
+            "friendlyName": "AWS Outlet Beta",
+            "manufacturerName": "iRedlof Co.",
+            "version": "v0.1"
+        }
+    },
+    {
+        "device_id": "aws-smartplug-03",
+        "switchboard_id": "0080000987",
+        "config": {
+            "capabilities": [
+                {
+                    "interface": "Alexa.PowerController",
+                    "properties": {
+                        "proactivelyReported": true,
+                        "retrievable": true,
+                        "supported": [
+                            {
+                                "name": "powerState"
+                            }
+                        ]
+                    },
+                    "type": "AlexaInterface",
+                    "version": "3"
+                }
+            ],
+            "cookie": {
+                "gpio": 12,
+                "in_MQTTChannel": "/0080000987/command",
+                "out_MQTTChannel": "/0080000987/feedback"
+            },
+            "description": "AWS Outlet Gamma, connected via iRedlof SmartHome Skill",
+            "displayCategories": [
+                "SMARTPLUG"
+            ],
+            "endpointId": "aws-smartplug-03",
+            "friendlyName": "AWS Outlet Gamma",
+            "manufacturerName": "iRedlof Co.",
+            "version": "v0.1"
+        }
+    },
+    {
+        "device_id": "aws-smartplug-04",
+        "switchboard_id": "0080000987",
+        "config": {
+            "capabilities": [
+                {
+                    "interface": "Alexa.PowerController",
+                    "properties": {
+                        "proactivelyReported": true,
+                        "retrievable": true,
+                        "supported": [
+                            {
+                                "name": "powerState"
+                            }
+                        ]
+                    },
+                    "type": "AlexaInterface",
+                    "version": "3"
+                }
+            ],
+            "cookie": {
+                "gpio": 16,
+                "in_MQTTChannel": "/0080000987/command",
+                "out_MQTTChannel": "/0080000987/feedback"
+            },
+            "description": "AWS Outlet Delta, connected via iRedlof SmartHome Skill",
+            "displayCategories": [
+                "SMARTPLUG"
+            ],
+            "endpointId": "aws-smartplug-04",
+            "friendlyName": "AWS Outlet Delta",
+            "manufacturerName": "iRedlof Co.",
+            "version": "v0.1"
+        }
+    }
+]

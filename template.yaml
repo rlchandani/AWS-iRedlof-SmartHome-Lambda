@@ -25,35 +25,71 @@ Resources:
         - arn:aws:iam::aws:policy/AWSLambdaFullAccess
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
         - arn:aws:iam::aws:policy/AWSIoTFullAccess
+  UsersDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: iRedlofUsers
+      AttributeDefinitions:
+        - AttributeName: user_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: user_id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  UserDevicesDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: iRedlofUserDevices
+      AttributeDefinitions:
+        - AttributeName: user_id
+          AttributeType: S
+        - AttributeName: device_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: user_id
+          KeyType: HASH
+        - AttributeName: device_id
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: deviceId_index
+          KeySchema:
+            - AttributeName: device_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
   SwitchBoardDevicesDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: iRedlofSwitchBoard
       AttributeDefinitions:
-        - AttributeName: user_id
-          AttributeType: S
-        - AttributeName: board_id
+        - AttributeName: switchboard_id
           AttributeType: S
       KeySchema:
-        - AttributeName: user_id
+        - AttributeName: switchboard_id
           KeyType: HASH
-        - AttributeName: board_id
-          KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
   DevicesDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: iRedlofDevices
       AttributeDefinitions:
-        - AttributeName: user_id
-          AttributeType: S
         - AttributeName: device_id
           AttributeType: S
       KeySchema:
-        - AttributeName: user_id
-          KeyType: HASH
         - AttributeName: device_id
-          KeyType: RANGE
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  DevicesConfigDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: iRedlofDevicesConfig
+      AttributeDefinitions:
+        - AttributeName: device_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: device_id
+          KeyType: HASH
       BillingMode: PAY_PER_REQUEST
   AlexaSkillFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -67,10 +103,25 @@ Resources:
         Variables:
           emailAddress: typhoon.2010@gmail.com
           phoneNumber: 12067718724
-          deviceDynamoDBTableName: !Select [1, !Split ['/', !GetAtt DevicesDynamoDBTable.Arn]]
-          switchBoardDynamoDBTableName: !Select [1, !Split ['/', !GetAtt DevicesDynamoDBTable.Arn]]
-          prodIOTDeviceEndpoint: a3d9g5ut0qd4az.iot.us-east-1.amazonaws.com
-          devIOTDeviceEndpoint: a3d9g5ut0qd4az-ats.iot.us-west-2.amazonaws.com
+          region: !Ref AWS::Region
+          usersDynamoDBTableName: !Select [1, !Split ['/', !GetAtt UsersDynamoDBTable.Arn]]
+          userDevicesDynamoDBTableName: !Select [1, !Split ['/', !GetAtt UserDevicesDynamoDBTable.Arn]]
+          devicesDynamoDBTableName: !Select [1, !Split ['/', !GetAtt DevicesDynamoDBTable.Arn]]
+          devicesConfigDynamoDBTableName: !Select [1, !Split ['/', !GetAtt DevicesConfigDynamoDBTable.Arn]]
+          switchBoardDynamoDBTableName: !Select [1, !Split ['/', !GetAtt SwitchBoardDevicesDynamoDBTable.Arn]]
+          prodIOTDeviceEndpoint: a3d9g5ut0qd4az-ats.iot.us-east-1.amazonaws.com
+          devIOTDeviceEndpoint: a3d9g5ut0qd4az-ats.iot.us-east-1.amazonaws.com
+  AlexaSkillFunctionLambdaVersion:
+    Type: AWS::Lambda::Version
+    Properties:
+      FunctionName: !Ref AlexaSkillFunction
+  AlexaSkillFunctionAsyncConfig:
+    Type: AWS::Lambda::EventInvokeConfig
+    Properties:
+      FunctionName: !Ref AlexaSkillFunction
+      MaximumEventAgeInSeconds: 60 # Minimum of 60 is required
+      MaximumRetryAttempts: 1
+      Qualifier: !GetAtt AlexaSkillFunctionLambdaVersion.Version
   # LoadDataFunction:
   #   Type: AWS::Serverless::Function
   #   Properties:
@@ -82,7 +133,7 @@ Resources:
   #     Environment:
   #       Variables:
   #         environment: 'local'
-  #         deviceDynamoDBTableName: 'iRedlofDevices'
+  #         devicesDynamoDBTableName: 'iRedlofDevices'
   #         switchBoardDynamoDBTableName: 'iRedlofSwitchBoard'
   # QueryDataFunction:
   #   Type: AWS::Serverless::Function
@@ -95,16 +146,5 @@ Resources:
   #     Environment:
   #       Variables:
   #         environment: 'local'
-  #         deviceDynamoDBTableName: 'iRedlofDevices'
+  #         devicesDynamoDBTableName: 'iRedlofDevices'
   #         switchBoardDynamoDBTableName: 'iRedlofSwitchBoard'
-  LambdaVersion:
-    Type: AWS::Lambda::Version
-    Properties:
-      FunctionName: !GetAtt AlexaSkillFunction.Arn
-  AsyncConfig:
-    Type: AWS::Lambda::EventInvokeConfig
-    Properties:
-      FunctionName: !Ref AlexaSkillFunction
-      MaximumEventAgeInSeconds: 60 # Minimum of 60 is required
-      MaximumRetryAttempts: 1
-      Qualifier: !GetAtt LambdaVersion.Version
