@@ -35,12 +35,13 @@ const importDevices = async () => {
         const deviceId = device.device_id;
         const switchboardId = device.switchboard_id;
         const config = device.config;
+        const name = config.cookie.name;
         const gpio = config.cookie.gpio;
         const inMQTT = config.cookie.in_MQTTChannel;
         const outMQTT = config.cookie.out_MQTTChannel;
-        const powerState = 'OFF';
+        const powerStateValue = "OFF";
         addDeviceConfigPromise.push(devicesConfidDao.add(deviceId, switchboardId, config));
-        addDevicePromise.push(devicesDao.add(deviceId, gpio, inMQTT, outMQTT, powerState));
+        addDevicePromise.push(devicesDao.add(deviceId, name, gpio, inMQTT, outMQTT, powerStateValue));
     });
     await Promise.all(addDeviceConfigPromise);
     await Promise.all(addDevicePromise);
@@ -317,7 +318,7 @@ exports.appOnExecute = async (event) => {
     if (eventHeader.namespace === 'Alexa.PowerController') {
         var command = eventHeader.name;
         var deviceId = eventEndpoint.endpointId;
-        var powerState = 0;
+        var powerState = false;
         var powerStateValue = "OFF";
         var header = {
             namespace: "Alexa",
@@ -338,12 +339,12 @@ exports.appOnExecute = async (event) => {
 
         switch (command) {
             case 'TurnOn':
-                powerState = 1;
+                powerState = true;
                 powerStateValue = 'ON';
                 contextResult.properties[0].value = powerStateValue;
                 break;
             case 'TurnOff':
-                powerState = 0;
+                powerState = false;
                 powerStateValue = 'OFF';
                 contextResult.properties[0].value = powerStateValue;
                 break;
@@ -362,7 +363,7 @@ exports.appOnExecute = async (event) => {
                 await devicesDao.updatePowerState(deviceId, powerStateValue);
                 var params = {
                     topic: device.in_mqtt,
-                    payload: '{gpio: {pin:' + device.gpio + ', state:' + powerState + '}}',
+                    payload: '{"plugId":"' + device.name + '", "plugState":' + powerState + '}',
                     qos: 0
                 };
                 await iotData.publish(params).promise()

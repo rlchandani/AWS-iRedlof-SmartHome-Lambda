@@ -20,9 +20,10 @@
                 }
             ],
             "cookie": {
+                "name": "board.plug1",
                 "gpio": 14,
-                "in_MQTTChannel": "/0080000987/command",
-                "out_MQTTChannel": "/0080000987/feedback"
+                "in_MQTTChannel": "/devices/esp8266_176E05/commands/",
+                "out_MQTTChannel": "/devices/esp8266_176E05/state"
             },
             "description": "AWS Outlet Alpha, connected via iRedlof SmartHome Skill",
             "displayCategories": [
@@ -55,9 +56,10 @@
                 }
             ],
             "cookie": {
+                "name": "board.plug2",
                 "gpio": 13,
-                "in_MQTTChannel": "/0080000987/command",
-                "out_MQTTChannel": "/0080000987/feedback"
+                "in_MQTTChannel": "/devices/esp8266_176E05/commands/",
+                "out_MQTTChannel": "/devices/esp8266_176E05/state"
             },
             "description": "AWS Outlet Beta, connected via iRedlof SmartHome Skill",
             "displayCategories": [
@@ -90,9 +92,10 @@
                 }
             ],
             "cookie": {
+                "name": "board.plug3",
                 "gpio": 12,
-                "in_MQTTChannel": "/0080000987/command",
-                "out_MQTTChannel": "/0080000987/feedback"
+                "in_MQTTChannel": "/devices/esp8266_176E05/commands/",
+                "out_MQTTChannel": "/devices/esp8266_176E05/state"
             },
             "description": "AWS Outlet Gamma, connected via iRedlof SmartHome Skill",
             "displayCategories": [
@@ -125,9 +128,10 @@
                 }
             ],
             "cookie": {
+                "name": "board.plug4",
                 "gpio": 16,
-                "in_MQTTChannel": "/0080000987/command",
-                "out_MQTTChannel": "/0080000987/feedback"
+                "in_MQTTChannel": "/devices/esp8266_176E05/commands/",
+                "out_MQTTChannel": "/devices/esp8266_176E05/state"
             },
             "description": "AWS Outlet Delta, connected via iRedlof SmartHome Skill",
             "displayCategories": [

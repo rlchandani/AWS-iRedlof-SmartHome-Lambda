@@ -35,11 +35,12 @@ exports.getAll = async () => {
     return devicesSnapshot;
 };
 
-exports.add = async (deviceId, gpio, inMQTT, outMQTT, powerState) => {
+exports.add = async (deviceId, name, gpio, inMQTT, outMQTT, powerState) => {
     const params = {
         TableName: DEVICES_DYNAMODB_TABLE,
         Item: {
             device_id: deviceId,
+            name: name,
             gpio: gpio,
             in_mqtt: inMQTT,
             out_mqtt: outMQTT,
@@ -58,21 +59,22 @@ exports.add = async (deviceId, gpio, inMQTT, outMQTT, powerState) => {
     return deviceSnapshot;
 };
 
-exports.update = async (deviceId, gpio, inMQTT, outMQTT, powerState) => {
+exports.update = async (deviceId, name, gpio, inMQTT, outMQTT, powerState) => {
     const params = {
-        TableName: DEVICES_DYNAMODB_TABLE,
-        Key: {
-            device_id: deviceId
-        },
-        UpdateExpression: 'SET gpio = :a, in_mqtt = :b, out_mqtt = :c, power_state = :d, updated_on = :t',
-        ExpressionAttributeValues: {
-            ':a': gpio,
-            ':b': inMQTT,
-            ':c': outMQTT,
-            ':d': powerState,
-            ':t': Date.now()
-        },
-        ReturnValues: 'UPDATED_NEW'
+      TableName: DEVICES_DYNAMODB_TABLE,
+      Key: {
+        device_id: deviceId,
+      },
+      UpdateExpression: "SET name = :a, gpio = :b, in_mqtt = :c, out_mqtt = :d, power_state = :e, updated_on = :t",
+      ExpressionAttributeValues: {
+        ":a": name,
+        ":b": gpio,
+        ":c": inMQTT,
+        ":d": outMQTT,
+        ":e": powerState,
+        ":t": Date.now(),
+      },
+      ReturnValues: "UPDATED_NEW",
     };
     console.log("Attempting to update an existing device");
     let deviceSnapshot;
