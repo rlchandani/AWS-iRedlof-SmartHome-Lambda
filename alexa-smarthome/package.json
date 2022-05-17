@@ -7,7 +7,7 @@
   "author": "Rohit Lal Chandani",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "aws-sdk": "^2.893.0",
     "google-auth-library": "^7.0.4"
   },
